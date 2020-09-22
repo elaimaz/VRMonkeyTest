@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 876f15f4c2891ca46a26f48b3ba7fc1d
+timeCreated: 1501396538
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Perfect DOS VGA 437 Win
+  fontNames:
+  - Perfect DOS VGA 437 Win
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
