@@ -30,7 +30,7 @@ public class ShockDamageArea : MonoBehaviour {
         AIAgent colAIagent = col.GetComponent<AIAgent>();
         if(colAIagent != null)
         {
-            colAIagent.OnShock(0);
+            colAIagent.OnShock(stunTime);
         }
     }
 }
