@@ -37,6 +37,12 @@ public class Character : MonoBehaviour {
         fireEffect.transform.forward = transform.forward;
 
         GameObject thisBullet= GameObject.Instantiate(bullet);
+        if (friend)
+        {
+            ParticleSystem ps = thisBullet.GetComponentInChildren<ParticleSystem>();
+            ParticleSystem.MainModule ma = ps.main;
+            ma.startColor = Color.blue;
+        }
         thisBullet.transform.position = transform.position + 0.3f * Vector3.up;
         thisBullet.transform.forward = transform.forward;
         thisBullet.GetComponent<DamageArea>().friend = friend;
