@@ -541,4 +541,5 @@ public class StealthPlayerController : Character {
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z), 0.2f);
     }
+
 }
