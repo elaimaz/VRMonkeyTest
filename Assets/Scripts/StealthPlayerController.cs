@@ -70,6 +70,7 @@ public class StealthPlayerController : Character {
     public float shootRate = 1.0f;
     public float shootTimer;
     public float floatHeight = 1;
+    public float newYPos;
     public GameObject shockObject;
 
     public GameObject drainObject;
@@ -81,6 +82,7 @@ public class StealthPlayerController : Character {
     [Header("Effects")]
     public ParticleSystem walkParticles;
     public ParticleSystem runParticles;
+    public ParticleSystem hoverParticles;
 
     [Header("Upgrades")]
     public bool canShock = false;
@@ -282,8 +284,6 @@ public class StealthPlayerController : Character {
             inputVector = Vector3.ClampMagnitude(inputVector, 1.0f);
             float camRotation = cam.transform.rotation.eulerAngles.y;
             inputVector = getMovementDirection(inputVector, camRotation);
-
-            //rb.velocity = new Vector3(Mathf.Max(0.0f,rb.velocity.x * (1.0f - Time.deltaTime)), rb.velocity.y, Mathf.Max(0.0f, rb.velocity.z * (1.0f - Time.deltaTime)));
             rb.velocity = new Vector3(0, rb.velocity.y, 0);
 
 
@@ -299,7 +299,6 @@ public class StealthPlayerController : Character {
                 threadController.speed = threadWalkSpeed;
                 threadController.audioSource.pitch = 1.0f;
             }
-            
 
             if (canHover && isGrounded() && Input.GetButton("Hover") && running == false)
             {
@@ -307,12 +306,21 @@ public class StealthPlayerController : Character {
                 if (changeHeight == false)
                 {
                     changeHeight = true;
-                    floatHeight += transform.position.y;
+                    newYPos = transform.position.y + floatHeight;
+                    audioSource.loop = true;
+                    audioSource.PlayOneShot(AudioManager.getInstance().hoverEffect);
+                    hoverParticles.Play();
                 }
+               
             }
             else if(Input.GetButtonUp("Hover"))
             {
                 hovering = false;
+                if (changeHeight == true)
+                    changeHeight = false;
+                audioSource.loop = false;
+                audioSource.Stop();
+                hoverParticles.Stop();
             }
 
             if (inputVector.magnitude > 0.1f)
@@ -391,7 +399,7 @@ public class StealthPlayerController : Character {
             if (hovering)
             {
                 energyDrain = energyDrain * hoverEnergyMultiplier;
-                transform.position = new Vector3(transform.position.x, floatHeight, transform.position.z);
+                transform.position = new Vector3(transform.position.x, newYPos, transform.position.z);
             }
 
             if (!moving)
