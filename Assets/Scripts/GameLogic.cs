@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using System.Collections.Generic;
 
 using UnityEngine.UI;
 public class GameLogic : MonoBehaviour {
@@ -200,6 +199,9 @@ public class GameLogic : MonoBehaviour {
                 player.canDrain = true;
                 DrainText.SetActive(true);
                 break;
+            case Upgrade.Type.shoot:
+                player.canShoot = true;
+                break;
         }
 
         StartCoroutine(EnablePlayerSkillRoutine(upgradeType));
@@ -223,6 +225,9 @@ public class GameLogic : MonoBehaviour {
                     ShowMessageBox("You acquired the DRAIN power! Press V to drain enemies' energy! ONLY WORKS ON UNAWARE ENEMIES");
                     player.canDrain = true;
                     break;
+                case Upgrade.Type.shoot:
+                    ShowMessageBox("You acquired the SHOOT power! Press B to shoot!");
+                    break;
             }
         }
         else
@@ -243,6 +248,7 @@ public class GameLogic : MonoBehaviour {
             }
         }
     }
+
     bool unpausesound = false;
     public void ShowMessageBox(string text)
     {
