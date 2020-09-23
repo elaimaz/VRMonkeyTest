@@ -15,7 +15,7 @@ public class Character : MonoBehaviour {
 
     public bool visible = true;
     public GameObject bullet;
-	// Use this for initialization
+
 	void Start () {
         audioSource = GetComponent<AudioSource>();
 	}
@@ -32,8 +32,6 @@ public class Character : MonoBehaviour {
 
     public void Fire()
     {
-        //Debug.Log("Fire");
-
         GameObject fireEffect = GameObject.Instantiate(EffectsManager.getInstance().shootEffect);
         fireEffect.transform.position= transform.position + 0.3f * Vector3.up+0.2f*transform.forward;
         fireEffect.transform.forward = transform.forward;

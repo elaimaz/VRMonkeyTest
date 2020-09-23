@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AIAgent : MonoBehaviour {
@@ -57,6 +56,8 @@ public class AIAgent : MonoBehaviour {
 
     bool ignoreLoseSight = false;
     public Camera cam;
+
+    public int health = 0;
     void Awake()
     {
         initialPosition = transform.position;
@@ -162,6 +163,12 @@ public class AIAgent : MonoBehaviour {
     {
         if (aiSight.sightState == AISight.SightStates.seeingEnemy)
         {
+            return false;
+        }
+
+        if(health > 0)
+        {
+            health--;
             return false;
         }
 
