@@ -27,6 +27,8 @@ public class GameLogic : MonoBehaviour {
     public GameObject ShockText;
     public GameObject CloakText;
     public GameObject DrainText;
+    public GameObject ShootText;
+    public GameObject FloatText;
 
     public GameObject enemyContainer;
     public GameObject enemyModel;
@@ -201,9 +203,11 @@ public class GameLogic : MonoBehaviour {
                 break;
             case Upgrade.Type.shoot:
                 player.canShoot = true;
+                ShootText.SetActive(true);
                 break;
             case Upgrade.Type.hover:
                 player.canHover = true;
+                FloatText.SetActive(true);
                 break;
         }
 
