@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using TreeEditor;
 using UnityEngine;
 
 public class StealthPlayerController : Character {
@@ -55,16 +56,20 @@ public class StealthPlayerController : Character {
     public bool cloaked = false;
     public bool running = false;
     public bool shot = false;
+    public bool hovering = false;
+    public bool changeHeight = false;
     public float runningSpeedMultiplier = 1.5f;
     public float runningEnergyMultiplier = 1.5f;
     public float cloakingEnergyMultiplier = 3.5f;
     public float drainingEnergyMultiplier = 4.0f;
-    public float shootEnergyCost = 3f;
+    public float shootEnergyCost = 10.0f;
+    public float hoverEnergyMultiplier = 1.5f;
     public float shockDelay = 0.3f;
     public float shockCost = 10;
     public float drainSpeed = 0;
     public float shootRate = 1.0f;
     public float shootTimer;
+    public float floatHeight = 1;
     public GameObject shockObject;
 
     public GameObject drainObject;
@@ -82,6 +87,7 @@ public class StealthPlayerController : Character {
     public bool canCloak = false;
     public bool canDrain = false;
     public bool canShoot = false;
+    public bool canHover = false;
 
     public ParticleSystem warpParticles;
     
@@ -266,7 +272,6 @@ public class StealthPlayerController : Character {
             Fire();
         }
 
-
         if (state == States.idle && !cloaked)
         {
  
@@ -293,6 +298,21 @@ public class StealthPlayerController : Character {
                 running = false;
                 threadController.speed = threadWalkSpeed;
                 threadController.audioSource.pitch = 1.0f;
+            }
+            
+
+            if (canHover && isGrounded() && Input.GetButton("Hover") && running == false)
+            {
+                hovering = true;
+                if (changeHeight == false)
+                {
+                    changeHeight = true;
+                    floatHeight += transform.position.y;
+                }
+            }
+            else if(Input.GetButtonUp("Hover"))
+            {
+                hovering = false;
             }
 
             if (inputVector.magnitude > 0.1f)
@@ -351,6 +371,7 @@ public class StealthPlayerController : Character {
             {
                 energyDrain = energyDrain * lowEnergyMultiplier;
             }
+
             if (running)
             {
                 energyDrain = energyDrain * runningEnergyMultiplier;
@@ -365,6 +386,12 @@ public class StealthPlayerController : Character {
             {
                 energyDrain = shootEnergyCost;
                 shot = false;
+            }
+
+            if (hovering)
+            {
+                energyDrain = energyDrain * hoverEnergyMultiplier;
+                transform.position = new Vector3(transform.position.x, floatHeight, transform.position.z);
             }
 
             if (!moving)
@@ -440,11 +467,8 @@ public class StealthPlayerController : Character {
         maxSpeedFraction = newSpeed.magnitude / maxSpeed;
 
         newSpeed = new Vector3(newSpeed.x, rb.velocity.y, newSpeed.z);
-
-        speed = newSpeed;
-
         
-
+        speed = newSpeed;
 
         if (rb == null)
         {
@@ -502,5 +526,19 @@ public class StealthPlayerController : Character {
     public void Kill()
     {
 
+    }
+
+    bool isGrounded()
+    {
+        Collider[] hit = Physics.OverlapSphere(new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z), 0.2f, 1 << 9);
+        if (hit.Length > 0)
+            return true;
+        return false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z), 0.2f);
     }
 }

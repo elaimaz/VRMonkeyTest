@@ -202,6 +202,9 @@ public class GameLogic : MonoBehaviour {
             case Upgrade.Type.shoot:
                 player.canShoot = true;
                 break;
+            case Upgrade.Type.hover:
+                player.canHover = true;
+                break;
         }
 
         StartCoroutine(EnablePlayerSkillRoutine(upgradeType));
@@ -227,6 +230,9 @@ public class GameLogic : MonoBehaviour {
                     break;
                 case Upgrade.Type.shoot:
                     ShowMessageBox("You acquired the SHOOT power! Press B to shoot!");
+                    break;
+                case Upgrade.Type.hover:
+                    ShowMessageBox("You acquired the HOVER power! Press N to hover all over the place!");
                     break;
             }
         }
