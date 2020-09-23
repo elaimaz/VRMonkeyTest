@@ -15,6 +15,7 @@ public class Character : MonoBehaviour {
 
     public bool visible = true;
     public GameObject bullet;
+    public float bulletSpeedMultiplier = 1.5f;
 
 	void Start () {
         audioSource = GetComponent<AudioSource>();
@@ -39,6 +40,7 @@ public class Character : MonoBehaviour {
         GameObject thisBullet= GameObject.Instantiate(bullet);
         if (friend)
         {
+            thisBullet.GetComponent<DamageArea>().speed *= bulletSpeedMultiplier; 
             ParticleSystem ps = thisBullet.GetComponentInChildren<ParticleSystem>();
             ParticleSystem.MainModule ma = ps.main;
             ma.startColor = Color.blue;
