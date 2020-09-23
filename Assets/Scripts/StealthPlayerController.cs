@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StealthPlayerController : Character {
@@ -55,13 +54,17 @@ public class StealthPlayerController : Character {
     [Header("Skills")]
     public bool cloaked = false;
     public bool running = false;
+    public bool shot = false;
     public float runningSpeedMultiplier = 1.5f;
     public float runningEnergyMultiplier = 1.5f;
     public float cloakingEnergyMultiplier = 3.5f;
     public float drainingEnergyMultiplier = 4.0f;
+    public float shootEnergyCost = 3f;
     public float shockDelay = 0.3f;
     public float shockCost = 10;
     public float drainSpeed = 0;
+    public float shootRate = 1.0f;
+    public float shootTimer;
     public GameObject shockObject;
 
     public GameObject drainObject;
@@ -78,6 +81,7 @@ public class StealthPlayerController : Character {
     public bool canShock = false;
     public bool canCloak = false;
     public bool canDrain = false;
+    public bool canShoot = false;
 
     public ParticleSystem warpParticles;
     
@@ -106,6 +110,8 @@ public class StealthPlayerController : Character {
         {
             energyBar.SetInitialValues(maxEnergy, 0, energy);
         }
+
+        shootTimer = 0;
 	}
 	
     public void SetEnergy(float val)
@@ -251,7 +257,14 @@ public class StealthPlayerController : Character {
                 cloakedModel.SetActive(false);
             }
         }
-        
+
+        shootTimer += Time.deltaTime;
+        if (shootTimer >= shootRate && canShoot && Input.GetButtonDown("Shoot") && (state == States.idle || state == States.moving)) 
+        {
+            shot = true;
+            shootTimer = 0;
+            Fire();
+        }
 
 
         if (state == States.idle && !cloaked)
@@ -346,6 +359,12 @@ public class StealthPlayerController : Character {
             if (cloaked)
             {
                 energyDrain = energyDrain * cloakingEnergyMultiplier;
+            }
+
+            if (shot)
+            {
+                energyDrain = shootEnergyCost;
+                shot = false;
             }
 
             if (!moving)

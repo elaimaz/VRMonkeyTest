@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Character : MonoBehaviour {
 
@@ -22,11 +20,6 @@ public class Character : MonoBehaviour {
         audioSource = GetComponent<AudioSource>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
     public void SetState(States newState)
     {
         state = newState;
@@ -53,6 +46,11 @@ public class Character : MonoBehaviour {
 
     public virtual void DealDamage(float val)
     {
-        
+        AIAgent agent;
+        agent = GetComponent<AIAgent>();
+        if (agent)
+        {
+            agent.OnDrainStart();
+        }
     }
 }
